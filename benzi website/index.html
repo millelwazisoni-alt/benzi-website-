@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Benzi — Posh Website Simulation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+ --harbor:#155E56; --ember:#E25B3D; --marigold:#D99A30;
+ --off:#F8F7F3; --ink:#1B1F1E; --muted:#68736F; --line:#DCE2DD;
+ --white:#fff; --deep:#0D3E39; --pale:#E8F0ED;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--off);color:var(--ink);font-family:Inter,Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+.container{max-width:1280px;margin:auto;padding:0 34px}
+.announcement{background:var(--harbor);color:#fff;text-align:center;padding:9px;font:500 10px "IBM Plex Mono";letter-spacing:.04em}
+.announcement span{color:#F0C76C}
+.nav{height:82px;background:rgba(248,247,243,.94);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(220,226,221,.7);position:sticky;top:0;z-index:20}
+.logo{font:700 39px/1 Fraunces;color:var(--harbor);letter-spacing:-.04em}
+.logo small{display:block;font:500 9px Inter;letter-spacing:.03em;color:var(--harbor);margin-top:6px}
+.navlinks{display:flex;gap:34px;font-size:12px;color:#56625E}
+.navlinks a:hover{color:var(--harbor)}
+.actions{display:flex;align-items:center;gap:9px}
+.btn{border:0;border-radius:999px;padding:13px 21px;font-size:11px;font-weight:700;transition:.2s}
+.btn:hover{transform:translateY(-1px)}
+.primary{background:var(--harbor);color:#fff;box-shadow:0 9px 22px rgba(21,94,86,.18)}
+.ember{background:var(--ember);color:#fff;box-shadow:0 9px 22px rgba(226,91,61,.16)}
+.outline{background:rgba(255,255,255,.5);border:1px solid var(--line);color:var(--harbor)}
+.hero{padding:55px 0 80px;overflow:hidden;position:relative}
+.hero:before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:#E7EFEB;right:-230px;top:-180px;z-index:-1}
+.heroGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}
+.kicker{font:600 10px "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+.hero h1{font:600 clamp(54px,6.4vw,88px);line-height:.94;letter-spacing:-.055em;margin:15px 0 25px;color:var(--deep)}
+.hero h1 em{font-style:normal;color:var(--ember)}
+.hero p{font-size:15px;line-height:1.8;color:var(--muted);max-width:610px}
+.heroActions{display:flex;gap:10px;margin:28px 0}
+.microTrust{display:flex;gap:25px;margin-top:35px}
+.microTrust div{border-left:1px solid #C8D2CC;padding-left:13px}
+.microTrust strong{display:block;font:700 22px Fraunces;color:var(--ink)}
+.microTrust span{font-size:9px;color:var(--muted)}
+.heroVisual{position:relative;min-height:560px}
+.photo{
+ position:absolute;inset:0 40px 20px 35px;border-radius:32px;overflow:hidden;
+ background:
+ radial-gradient(circle at 72% 24%,rgba(255,255,255,.7) 0 4%,transparent 5%),
+ linear-gradient(135deg,#0c4944 0%,#155E56 42%,#9E9C87 100%);
+ box-shadow:0 35px 75px rgba(19,45,40,.20);
+}
+.photo:before{
+ content:"";position:absolute;inset:0;
+ background:
+ linear-gradient(115deg,transparent 0 47%,rgba(255,255,255,.12) 48%,transparent 49%),
+ linear-gradient(180deg,transparent 58%,rgba(10,30,28,.55));
+}
+.skyline{position:absolute;bottom:0;left:0;right:0;height:42%;background:
+ linear-gradient(90deg,transparent 0 3%,#123E3A 3% 8%,transparent 8% 12%,#1A4945 12% 17%,transparent 17% 21%,#0D3734 21% 27%,transparent 27% 32%,#164540 32% 39%,transparent 39% 45%,#0D3734 45% 53%,transparent 53% 58%,#174B45 58% 65%,transparent 65% 70%,#0E3935 70% 78%,transparent 78% 83%,#174640 83% 91%,transparent 91% 96%,#0D3734 96%);
+ clip-path:polygon(0 58%,5% 58%,5% 30%,10% 30%,10% 50%,16% 50%,16% 20%,21% 20%,21% 44%,27% 44%,27% 9%,31% 9%,31% 52%,37% 52%,37% 27%,43% 27%,43% 45%,49% 45%,49% 14%,54% 14%,54% 55%,61% 55%,61% 35%,66% 35%,66% 51%,72% 51%,72% 17%,77% 17%,77% 48%,84% 48%,84% 27%,90% 27%,90% 49%,96% 49%,96% 35%,100% 35%,100% 100%,0 100%);
+}
+.floating{
+position:absolute;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.7);
+border-radius:17px;padding:16px;box-shadow:0 20px 45px rgba(20,35,32,.16)
+}
+.floatTop{top:35px;right:0;width:190px}.floatBottom{bottom:0;left:0;width:225px}
+.floatTitle{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.floatMain{font:600 22px Fraunces;color:var(--harbor);margin-top:6px}
+.floatSub{font-size:9px;color:var(--muted);margin-top:3px}
+.avatars{display:flex;margin-top:11px}.av{width:29px;height:29px;border-radius:50%;background:#D5DDD8;border:2px solid #fff;margin-right:-7px;display:grid;place-items:center;font:700 10px Fraunces;color:var(--harbor)}
+.section{padding:100px 0}
+.sectionWhite{background:#fff}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+.sectionHead h2{font:600 clamp(36px,4.4vw,58px)/1 Fraunces;letter-spacing:-.04em;color:var(--deep);margin:10px 0 0}
+.sectionHead p{max-width:430px;font-size:12px;line-height:1.7;color:var(--muted)}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.service{min-height:260px;border:1px solid var(--line);border-radius:20px;padding:24px;background:var(--off);position:relative;overflow:hidden;transition:.25s}
+.service:hover{transform:translateY(-5px);box-shadow:0 22px 45px rgba(22,48,43,.09);border-color:#C6D4CE}
+.service .num{font:500 10px "IBM Plex Mono";color:var(--ember)}
+.service .icon{width:49px;height:49px;border-radius:15px;display:grid;place-items:center;margin:44px 0 20px;background:var(--pale);color:var(--harbor);font-size:21px}
+.service:nth-child(2) .icon{background:#FCEAE5;color:var(--ember)}
+.service:nth-child(3) .icon{background:#FBF0DC;color:#A66D16}
+.service:nth-child(4) .icon{background:#E8EEE8;color:var(--harbor)}
+.service h3{font:600 25px Fraunces;margin:0 0 7px;color:var(--deep)}
+.service p{font-size:10px;line-height:1.6;color:var(--muted);margin:0}
+.service .arrow{position:absolute;right:22px;bottom:20px;font-size:17px;color:var(--harbor)}
+.split{display:grid;grid-template-columns:.9fr 1.1fr;gap:65px;align-items:center}
+.bigQuote{font:600 clamp(40px,5vw,65px)/1.02 Fraunces;letter-spacing:-.045em;color:var(--deep);margin:16px 0 22px}
+.bodyText{font-size:13px;line-height:1.8;color:var(--muted);max-width:500px}
+.checks{display:grid;gap:14px;margin-top:27px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:11px;color:#3F4B47}
+.check b{font-size:11px}.checkIcon{width:23px;height:23px;border-radius:50%;background:var(--harbor);color:#fff;display:grid;place-items:center;flex:none;font-size:10px}
+.escrow{
+background:var(--harbor);border-radius:28px;padding:30px;color:#fff;position:relative;overflow:hidden;box-shadow:0 28px 65px rgba(21,94,86,.18)
+}
+.escrow:after{content:"";position:absolute;width:290px;height:290px;border-radius:50%;right:-120px;bottom:-140px;border:55px solid rgba(255,255,255,.06)}
+.escrowHead{display:flex;justify-content:space-between;align-items:center}.escrowTitle{font:600 27px Fraunces}.lock{width:38px;height:38px;border:1px solid rgba(255,255,255,.25);border-radius:50%;display:grid;place-items:center}
+.escrowAmount{font:600 58px Fraunces;margin:38px 0 4px}.escrowLabel{font-size:9px;color:rgba(255,255,255,.62)}
+.progress{height:5px;background:rgba(255,255,255,.16);border-radius:99px;margin:30px 0 20px}.progress span{display:block;width:72%;height:100%;border-radius:99px;background:#D99A30}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.estep{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px}.estep b{display:block;font-size:9px}.estep span{font-size:8px;color:rgba(255,255,255,.55)}
+.providerBand{background:#F1F2ED}
+.providerGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:35px;align-items:stretch}
+.providerCopy{background:var(--deep);border-radius:28px;padding:50px;color:#fff;overflow:hidden;position:relative}
+.providerCopy:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;border:65px solid rgba(217,154,48,.12);right:-130px;top:-120px}
+.providerCopy h2{font:600 53px/1 Fraunces;letter-spacing:-.04em;margin:12px 0 20px;max-width:570px}
+.providerCopy p{font-size:12px;line-height:1.8;color:rgba(255,255,255,.66);max-width:500px}
+.providerCard{background:#fff;border-radius:28px;padding:30px;border:1px solid var(--line)}
+.earnings{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:20px}
+.earnings strong{font:600 43px Fraunces;color:var(--harbor)}
+.earnings span{font-size:9px;color:var(--muted)}
+.metric{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #EDF0EC;font-size:10px}.metric b{color:var(--deep)}
+.metric span{color:var(--muted)}
+.quoteBand{padding:85px 0;text-align:center}
+.quoteBand blockquote{font:600 clamp(34px,4.8vw,60px)/1.08 Fraunces;color:var(--deep);letter-spacing:-.04em;max-width:900px;margin:0 auto}
+.quoteBand cite{display:block;font:500 9px "IBM Plex Mono";letter-spacing:.08em;color:var(--ember);margin-top:22px;font-style:normal}
+.cta{background:var(--harbor);color:#fff;padding:85px 0}
+.ctaGrid{display:flex;justify-content:space-between;align-items:center;gap:40px}.cta h2{font:600 58px/1 Fraunces;letter-spacing:-.045em;margin:0;max-width:720px}.cta p{font-size:11px;color:rgba(255,255,255,.78);max-width:450px;line-height:1.7}
+.footer{background:#103F3B;color:#fff;padding:38px 0}.footerGrid{display:flex;justify-content:space-between;gap:40px}.footer .logo{color:#fff}.footerLinks{display:flex;gap:35px;font-size:10px;color:rgba(255,255,255,.65)}.copyright{font-size:8px;color:rgba(255,255,255,.42);margin-top:35px;border-top:1px solid rgba(255,255,255,.12);padding-top:20px}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,31,28,.7);backdrop-filter:blur(7px);z-index:50;align-items:center;justify-content:center;padding:20px}.modalBox{background:var(--off);width:min(500px,100%);border-radius:24px;padding:32px;box-shadow:0 35px 90px rgba(0,0,0,.3);max-height:90vh;overflow:auto}.close{float:right;border:0;background:none;font-size:24px;color:var(--muted)}.modal h2{font:600 36px Fraunces;color:var(--deep);margin:8px 0 12px}.field{margin:13px 0}.field label{display:block;font:600 8px "IBM Plex Mono";letter-spacing:.08em;margin-bottom:6px;color:var(--muted)}.field input,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:10px}.upload{border:1px dashed #B8C6C0;border-radius:10px;padding:15px;margin:9px 0;font-size:9px;color:var(--muted)}.upload b{display:block;color:var(--harbor);margin-bottom:3px}.note{background:#FBEFE7;border-radius:10px;padding:12px;font-size:9px;line-height:1.5;color:#745A40;margin:14px 0}
+@media(max-width:950px){.heroGrid,.split,.providerGrid{grid-template-columns:1fr}.heroVisual{min-height:500px}.services{grid-template-columns:1fr 1fr}.navlinks{display:none}.ctaGrid{display:block}.cta .btn{margin-top:25px}}
+@media(max-width:600px){.container{padding:0 20px}.nav{height:70px}.logo{font-size:32px}.nav .outline{display:none}.hero{padding-top:35px}.hero h1{font-size:53px}.heroVisual{min-height:430px}.photo{inset:0 15px 20px 10px}.floatTop{right:-5px}.floatBottom{left:-5px}.services{grid-template-columns:1fr}.section{padding:70px 0}.sectionHead{display:block}.providerCopy h2,.cta h2{font-size:43px}.providerCopy{padding:34px}.footerGrid{display:block}.footerLinks{margin-top:25px;flex-wrap:wrap}}
+
+/* Premium Benzi visual system */
+body{transition:background .25s,color .25s}
+.themeToggle{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);display:grid;place-items:center;font-size:15px}
+:root{--stage:#E7EFEB;--card:#FFFFFF}
+body.dark{
+ --off:#0B1715;--ink:#F3F5F1;--muted:#A8B5B0;--line:#263A35;--white:#111E1B;
+ --deep:#DDEBE5;--pale:#18322D;--stage:#102823;--card:#13231F;
+ background:var(--off);color:var(--ink)
+}
+body.dark .nav{background:rgba(11,23,21,.94);border-color:var(--line)}
+body.dark .sectionWhite{background:#0F1E1B}
+body.dark .service{background:#12221F;border-color:var(--line)}
+body.dark .service:hover{box-shadow:0 22px 45px rgba(0,0,0,.25)}
+body.dark .outline{background:#13231F;color:#CFE1DB;border-color:#314740}
+body.dark .providerBand{background:#0D1B18}
+body.dark .providerCopy{background:#155E56;color:#fff}
+body.dark .providerCopy h2{color:#fff}
+body.dark .providerCopy p{color:rgba(255,255,255,.78)}
+body.dark .providerCard{background:#13231F;border-color:var(--line)}
+body.dark .modalBox{background:#10201D}
+body.dark .field input,.dark .field select{background:#0B1715;color:#fff;border-color:#314740}
+body.dark .quoteBand{background:#0B1715}
+body.dark .hero:before{background:#102823}
+body.dark .floatTop,.dark .floatBottom{background:rgba(19,35,31,.92);border-color:#314740}
+body.dark .logo{color:#7CC1B4}
+body.dark .sectionHead h2,.dark .bigQuote,.dark .service h3{color:#E3EEE9}
+body.dark .navlinks{color:#9EADA8}
+
+.premiumStage{
+ position:absolute;inset:0 0 18px 0;border-radius:34px;background:var(--stage);
+ overflow:hidden;border:1px solid rgba(21,94,86,.13);
+ box-shadow:0 32px 80px rgba(17,48,43,.16)
+}
+.stageGlow{position:absolute;width:430px;height:430px;border-radius:50%;right:-120px;top:-150px;background:rgba(217,154,48,.16);filter:blur(3px)}
+.providerProfile{
+ position:absolute;left:11%;top:16%;width:70%;padding:23px;border-radius:22px;
+ background:rgba(255,255,255,.91);border:1px solid rgba(255,255,255,.8);
+ box-shadow:0 25px 55px rgba(20,54,48,.17);z-index:3
+}
+body.dark .providerProfile{background:rgba(19,35,31,.94);border-color:#314740}
+.profileTop{display:flex;align-items:center;gap:13px}.avatar{width:51px;height:51px;border-radius:50%;background:var(--harbor);color:#fff;display:grid;place-items:center;font:700 17px Fraunces}.profileTop strong{display:block;font:600 20px Fraunces;color:var(--deep)}.profileTop small{display:block;font-size:8px;color:var(--muted);margin-top:3px}.tiny{font:600 7px "IBM Plex Mono";letter-spacing:.1em;color:var(--ember);margin-bottom:4px}.verified{margin-left:auto;width:25px;height:25px;border-radius:50%;background:#DCEFE7;color:var(--harbor);display:grid;place-items:center;font-size:12px}.profileRule{height:1px;background:var(--line);margin:19px 0 14px}.profileStats{display:flex;gap:18px;font-size:9px;color:var(--harbor);font-weight:700}.profileStats small{font-weight:400;color:var(--muted);font-size:7px}.miniBook{margin-top:18px;width:100%;border:0;border-radius:9px;padding:10px;background:var(--harbor);color:#fff;font-size:9px;font-weight:700;display:flex;justify-content:space-between}.serviceOrb{position:absolute;width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font-size:22px;box-shadow:0 16px 32px rgba(20,54,48,.13);z-index:2}.serviceOrb span{position:absolute;bottom:7px;font:600 6px "IBM Plex Mono";text-transform:uppercase;letter-spacing:.08em}.orbOne{left:5%;bottom:18%;background:#DCEDE9;color:var(--harbor)}.orbTwo{right:7%;top:25%;background:#FCE9E4;color:var(--ember)}.orbThree{left:19%;top:8%;background:#FBF0DD;color:#A66D16}.orbFour{right:19%;bottom:8%;background:#E5EEE8;color:var(--harbor)}.secureCard{position:absolute;right:5%;bottom:16%;width:235px;background:var(--harbor);color:#fff;border-radius:18px;padding:15px;display:flex;gap:11px;align-items:center;box-shadow:0 22px 42px rgba(21,94,86,.25);z-index:4}.secureIcon{width:31px;height:31px;border-radius:50%;background:rgba(255,255,255,.13);display:grid;place-items:center;font-size:12px}.secureCard strong{display:block;font:600 15px Fraunces}.secureCard small{display:block;color:rgba(255,255,255,.62);font-size:7px;line-height:1.45;margin-top:3px}.localPill{position:absolute;left:9%;bottom:7%;background:var(--ink);color:var(--off);border-radius:999px;padding:9px 13px;font:500 7px "IBM Plex Mono";letter-spacing:.03em;z-index:5}.localPill span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--marigold);margin-right:6px}
+@media(max-width:600px){.premiumStage{inset:0 0 20px}.providerProfile{left:7%;width:86%;top:17%;padding:17px}.profileStats{gap:10px}.secureCard{right:5%;width:205px}.serviceOrb{width:52px;height:52px;border-radius:17px}.localPill{left:5%;bottom:5%;font-size:6px}}
+</style>
+</head>
+<body>
+
+
+<nav class="nav">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+    <a class="logo" href="#">Benzi<small>Real People. Real Services. Right Here.</small></a>
+    <div class="navlinks">
+      <a href="#services">Services</a><a href="#how">How It Works</a><a href="#trust">Why Benzi</a><a href="#providers">For Providers</a>
+    </div>
+    <div class="actions"><button class="themeToggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">☾</button><button class="btn outline" onclick="login()">Login</button><button class="btn primary" onclick="signup()">Get Started</button></div>
+  </div>
+</nav>
+
+<main>
+<section class="hero">
+<div class="container heroGrid">
+<div>
+  <div class="kicker">Durban · Local services · Trusted professionals</div>
+  <h1>Trusted help,<br><em>right around</em> the corner.</h1>
+  <p>From IT support and home cleaning to tutoring and childcare, Benzi connects Durban households with verified local professionals — with chat, secure payments and escrow built into every booking.</p>
+  <div class="heroActions"><button class="btn ember" onclick="signup()">Find a Service →</button><button class="btn outline" onclick="provider()">Become a Provider</button></div>
+  <div class="microTrust">
+    <div><strong>160+</strong><span>Verified pros</span></div>
+    <div><strong>4.8★</strong><span>Average rating</span></div>
+    <div><strong>100%</strong><span>Escrow protected</span></div>
+  </div>
+</div>
+<div class="heroVisual">
+  <div class="premiumStage">
+    <div class="stageGlow"></div>
+    <div class="serviceOrb orbOne">⌘<span>IT</span></div>
+    <div class="serviceOrb orbTwo">♡<span>Care</span></div>
+    <div class="serviceOrb orbThree">✦<span>Home</span></div>
+    <div class="serviceOrb orbFour">▥<span>Learn</span></div>
+
+    <div class="providerProfile">
+      <div class="profileTop">
+        <div class="avatar">SM</div>
+        <div>
+          <div class="tiny">BENZI VERIFIED</div>
+          <strong>Sipho Mthembu</strong>
+          <small>IT Support Specialist · Umhlanga</small>
+        </div>
+        <div class="verified">✓</div>
+      </div>
+      <div class="profileRule"></div>
+      <div class="profileStats"><span>★ 4.9 <small>132 reviews</small></span><span>9 yrs <small>experience</small></span><span>2.4 km <small>away</small></span></div>
+      <button class="miniBook">View Profile <b>↗</b></button>
+    </div>
+
+    <div class="secureCard">
+      <div class="secureIcon">✓</div>
+      <div><div class="tiny">BENZI ESCROW</div><strong>Payment protected</strong><small>Released when the job is confirmed complete.</small></div>
+    </div>
+
+    <div class="localPill"><span></span> Trusted help, right around the corner</div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="section sectionWhite" id="services">
+<div class="container">
+<div class="sectionHead"><div><div class="kicker">Explore Benzi</div><h2>Everyday help,<br>right around the corner.</h2></div><p>Choose what you need. Tell us where you are. We'll help you find a strong local match based on distance, rating and experience.</p></div>
+<div class="services">
+<div class="service"><div class="num">01 / IT</div><div class="icon">⌘</div><h3>IT Support</h3><p>Wi-Fi, laptop repairs, networks, smart home and virus removal.</p><div class="arrow">↗</div></div>
+<div class="service"><div class="num">02 / CARE</div><div class="icon">♡</div><h3>Nanny & Childcare</h3><p>Newborn, overnight and after-school care from qualified carers.</p><div class="arrow">↗</div></div>
+<div class="service"><div class="num">03 / HOME</div><div class="icon">✦</div><h3>Cleaning</h3><p>Deep cleans, move-outs, weekly maintenance and eco-friendly options.</p><div class="arrow">↗</div></div>
+<div class="service"><div class="num">04 / LEARN</div><div class="icon">▥</div><h3>Tutoring</h3><p>Find tutors by subject, location, experience and reputation.</p><div class="arrow">↗</div></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="how">
+<div class="container split">
+<div>
+<div class="kicker">How Benzi works</div>
+<div class="bigQuote">Find the right person. Talk first. Book with confidence.</div>
+<p class="bodyText">Benzi is designed around a simple idea: local services should feel personal, transparent and safe from the first conversation to the final payment.</p>
+<div class="checks">
+<div class="check"><span class="checkIcon">1</span><span><b>Choose your service</b><br>Tell Benzi your suburb and what you need.</span></div>
+<div class="check"><span class="checkIcon">2</span><span><b>Chat before booking</b><br>Ask questions and agree on the job in-app.</span></div>
+<div class="check"><span class="checkIcon">3</span><span><b>Pay securely</b><br>Your payment is held in Benzi Escrow.</span></div>
+<div class="check"><span class="checkIcon">4</span><span><b>Confirm & review</b><br>Release payment after the service is complete.</span></div>
+</div>
+</div>
+<div class="escrow" id="trust">
+<div class="escrowHead"><div class="escrowTitle">Benzi Escrow</div><div class="lock">✓</div></div>
+<div class="escrowAmount">R450</div><div class="escrowLabel">HELD SECURELY FOR · WI-FI TROUBLESHOOTING</div>
+<div class="progress"><span></span></div>
+<div class="steps"><div class="estep"><b>Payment secured</b><span>✓ Complete</span></div><div class="estep"><b>Service happens</b><span>Next step</span></div><div class="estep"><b>Payment released</b><span>After confirmation</span></div></div>
+<p style="font-size:9px;line-height:1.7;color:rgba(255,255,255,.62);margin-top:25px">If something goes wrong, Benzi provides a dispute path rather than automatically releasing the funds.</p>
+</div>
+</div>
+</section>
+
+<section class="section providerBand" id="providers">
+<div class="container providerGrid">
+<div class="providerCopy">
+<div class="kicker" style="color:#D99A30">For skilled people</div>
+<h2>Turn your skills into a steady income.</h2>
+<p>Create a professional profile, submit your verification documents and, once approved, receive nearby booking opportunities through Benzi.</p>
+<button class="btn ember" onclick="provider()">Create Provider Account →</button>
+</div>
+<div class="providerCard">
+<div class="kicker">Provider example</div>
+<h3 style="font:600 31px Fraunces;color:var(--deep);margin:8px 0 20px">Sipho Mthembu</h3>
+<div class="earnings"><div><strong>R12,600</strong><span style="display:block">illustrative monthly earnings</span></div><span>IT Support · 9 yrs</span></div>
+<div class="metric"><span>Bookings</span><b>28</b></div><div class="metric"><span>Average rating</span><b>4.9 ★</b></div><div class="metric"><span>Response rate</span><b>98%</b></div><div class="metric"><span>Platform fee</span><b>12% / booking</b></div>
+<div class="note">Provider documents are for Benzi's verification process and should never appear publicly on the customer-facing profile.</div>
+</div>
+</div>
+</section>
+
+<section class="quoteBand">
+<div class="container"><blockquote>“More than a service.<br>It's peace of mind.”</blockquote><cite>BENZI · REAL PEOPLE. REAL SERVICES. RIGHT HERE.</cite></div>
+</section>
+
+<section class="cta">
+<div class="container ctaGrid">
+<div><div class="kicker" style="color:#D99A30">Start local</div><h2>Find the trusted help near you.</h2><p>Browse providers, chat for free and pay only when you're ready to book.</p></div>
+<button class="btn primary" style="background:#F8F7F3;color:var(--harbor)" onclick="signup()">Get Started →</button>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container">
+<div class="footerGrid"><div><div class="logo">Benzi<small style="color:rgba(255,255,255,.6)">Real People. Real Services. Right Here.</small></div></div>
+<div class="footerLinks"><a href="#services">Services</a><a href="#how">How It Works</a><a href="#providers">Providers</a><a href="#" onclick="login();return false">Login</a></div></div>
+<div class="copyright">© 2026 Benzi · Durban, South Africa · A local-services marketplace concept</div>
+</div>
+</footer>
+
+<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+
+<script>
+
+const savedTheme=localStorage.getItem('benzi-theme');
+if(savedTheme==='dark'){document.body.classList.add('dark');document.getElementById('themeToggle').textContent='☀';}
+function toggleTheme(){
+ document.body.classList.toggle('dark');
+ const dark=document.body.classList.contains('dark');
+ localStorage.setItem('benzi-theme',dark?'dark':'light');
+ document.getElementById('themeToggle').textContent=dark?'☀':'☾';
+}
+
+const modal=document.getElementById('modal'), content=document.getElementById('modalContent');
+function show(x){content.innerHTML=x;modal.style.display='flex'}
+function closeModal(){modal.style.display='none'}
+function signup(){show(`<div class="kicker">Customer account</div><h2>Create your Benzi account.</h2><p style="font-size:11px;color:var(--muted);line-height:1.6">Start with the essentials. Your account can later carry your bookings, chats and reviews.</p>
+<div class="field"><label>FIRST NAME</label><input placeholder="First name"></div><div class="field"><label>SURNAME</label><input placeholder="Surname"></div>
+<div class="field"><label>MOBILE</label><input placeholder="+27"></div><div class="field"><label>EMAIL</label><input placeholder="you@example.com"></div>
+<div class="field"><label>SUBURB</label><select><option>Umhlanga</option><option>Durban North</option><option>Westville</option><option>Pinetown</option></select></div>
+<div class="field"><label>PASSWORD</label><input type="password" placeholder="Create password"></div>
+<p style="font-size:9px;color:var(--muted)">☐ I agree to Benzi's Terms & Privacy Policy.</p><button class="btn primary" style="width:100%" onclick="complete('Customer account created')">Create Account</button>
+<p style="font-size:9px;text-align:center;color:var(--muted)">Already registered? <b onclick="login()" style="color:var(--harbor);cursor:pointer">Log in</b></p>`)}
+function login(){show(`<div class="kicker">Welcome back</div><h2>Log in to Benzi.</h2><div class="field"><label>EMAIL OR MOBILE</label><input placeholder="Email or mobile"></div><div class="field"><label>PASSWORD</label><input type="password" placeholder="Password"></div><button class="btn primary" style="width:100%" onclick="complete('Logged in')">Log in</button><p style="font-size:9px;text-align:center;color:var(--muted)">Forgot password?</p><hr style="border:0;border-top:1px solid var(--line)"><button class="btn outline" style="width:100%;margin-top:10px" onclick="signup()">Create customer account</button><button class="btn outline" style="width:100%;margin-top:8px" onclick="provider()">I'm a service provider</button>`)}
+function provider(){show(`<div class="kicker">Provider registration</div><h2>Become a Benzi provider.</h2><p style="font-size:11px;color:var(--muted);line-height:1.6">Provider onboarding is more detailed because approval and verification happen before a profile becomes searchable.</p>
+<div class="field"><label>LEGAL FIRST + LAST NAME</label><input placeholder="Full legal name"></div><div class="field"><label>MOBILE / EMAIL</label><input placeholder="+27 / email"></div><div class="field"><label>SUBURB</label><input placeholder="Where you operate"></div><div class="field"><label>SERVICE</label><select><option>IT Support</option><option>Cleaning</option><option>Tutoring</option><option>Nanny & Childcare</option></select></div>
+<div class="upload"><b>＋ SA ID / identity document</b>Secure verification upload</div><div class="upload"><b>＋ Qualification / certificate</b>Where applicable</div><div class="upload"><b>＋ First-aid certificate</b>Required for childcare providers</div>
+<div class="note">Verification documents should be stored securely and kept separate from the public provider profile.</div><button class="btn primary" style="width:100%" onclick="complete('Provider application submitted for review')">Submit Application</button>`)}
+function complete(msg){show(`<div style="text-align:center;padding:25px 5px"><div style="font-size:38px;color:var(--harbor)">✓</div><h2 style="font-size:30px">${msg}</h2><p style="font-size:10px;color:var(--muted);line-height:1.7">This is a visual simulation. A production version would connect these forms to secure authentication, document storage, verification and the Benzi database.</p><button class="btn primary" onclick="closeModal()">Continue</button></div>`)}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+</script>
+</body></html>
