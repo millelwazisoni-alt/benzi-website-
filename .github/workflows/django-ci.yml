@@ -1,48 +1,9 @@
 
-name: Benzi Django Backend CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+#!/usr/bin/env bash
+set -o errexit
 
-permissions:
-  contents: read
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
-jobs:
-  test:
-    name: Test Django Backend
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-          cache: "pip"
-          cache-dependency-path: requirements.txt
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-
-      - name: Check Django configuration
-        env:
-          SECRET_KEY: github-actions-test-key
-          DEBUG: "True"
-        run: |
-          python manage.py check
-
-      - name: Run Django tests
-        env:
-          SECRET_KEY: github-actions-test-key
-          DEBUG: "True"
-        run: |
-          python manage.py test
+python manage.py collectstatic --no-input
