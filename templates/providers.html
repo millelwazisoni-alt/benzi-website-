@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benzi | Find a Provider</title>
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --harbor:#155E56;
+    --ember:#E25B3D;
+    --marigold:#D99A30;
+    --off:#F8F7F3;
+    --ink:#1B1F1E;
+    --muted:#68736F;
+    --line:#DCE2DD;
+    --white:#fff;
+    --deep:#0D3E39;
+    --pale:#E8F0ED;
+}
+
+* { box-sizing:border-box; }
+
+body {
+    margin:0;
+    background:var(--off);
+    color:var(--ink);
+    font-family:Inter,sans-serif;
+}
+
+nav {
+    height:75px;
+    padding:0 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+}
+
+.logo {
+    font:600 30px Fraunces,serif;
+    color:var(--harbor);
+    text-decoration:none;
+}
+
+.back {
+    color:var(--harbor);
+    text-decoration:none;
+    font-size:12px;
+    font-weight:600;
+}
+
+.container {
+    max-width:1150px;
+    margin:auto;
+    padding:65px 25px;
+}
+
+.kicker {
+    font:500 10px "IBM Plex Mono",monospace;
+    color:var(--ember);
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+}
+
+h1 {
+    font:600 clamp(36px,5vw,55px) Fraunces,serif;
+    color:var(--deep);
+    margin:12px 0;
+}
+
+.intro {
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.8;
+    max-width:550px;
+}
+
+.toolbar {
+    margin:35px 0 25px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.toolbar input,
+.toolbar select {
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:white;
+    font:12px Inter,sans-serif;
+}
+
+.toolbar input { flex:1; min-width:200px; }
+
+.provider-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+}
+
+.provider-card {
+    background:white;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:24px;
+    transition:.2s;
+}
+
+.provider-card:hover {
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px rgba(22,48,43,.07);
+}
+
+.provider-category {
+    color:var(--ember);
+    font:500 9px "IBM Plex Mono",monospace;
+    letter-spacing:1px;
+}
+
+.provider-card h2 {
+    font:600 25px Fraunces,serif;
+    color:var(--deep);
+    margin:13px 0 8px;
+}
+
+.provider-card p {
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.provider-details {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    border-top:1px solid var(--line);
+    padding-top:17px;
+    margin-top:20px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+.price {
+    color:var(--harbor);
+    font:600 19px Fraunces,serif;
+}
+
+.empty {
+    color:var(--muted);
+    font-size:13px;
+    padding:25px 0;
+}
+
+@media(max-width:650px) {
+    .provider-grid { grid-template-columns:1fr; }
+    .container { padding:40px 18px; }
+    nav { padding:0 20px; }
+}
+
+/* Benzi shared dark mode */
+body {
+    transition: background .25s, color .25s;
+}
+
+:root {
+    --stage: #E7EFEB;
+    --card: #FFFFFF;
+}
+
+body.dark {
+    --off: #0B1715;
+    --ink: #F3F5F1;
+    --muted: #A8B5B0;
+    --line: #263A35;
+    --white: #111E1B;
+    --deep: #DDEBE5;
+    --pale: #18322D;
+    --stage: #102823;
+    --card: #13231F;
+
+    background: var(--off);
+    color: var(--ink);
+}
+
+body.dark .nav {
+    background: rgba(11,23,21,.94);
+    border-color: var(--line);
+}
+
+body.dark .providerResults {
+    color: var(--ink);
+}
+
+body.dark .provider-card,
+body.dark .providerCard {
+    background: #13231F;
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+body.dark input,
+body.dark select {
+    background: #0B1715;
+    color: #F3F5F1;
+    border-color: #314740;
+}
+
+body.dark .logo {
+    color: #7CC1B4;
+}
+
+body.dark .themeToggle {
+    color: var(--ink);
+    border-color: var(--line);
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="/" class="logo">benzi.</a>
+    <a href="/" class="back">← Back to homepage</a>
+</nav>
+
+<main class="container">
+
+    <div class="kicker">The Benzi Marketplace</div>
+
+    <h1 id="pageTitle">Find your provider.</h1>
+
+    <p class="intro" id="pageIntro">
+        Discover trusted local professionals offering services in your area.
+    </p>
+
+    <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Search services or providers...">
+        <input id="suburbInput" type="text" placeholder="Filter by suburb">
+    </div>
+
+    <div id="providerResults" class="provider-grid">
+        <p class="empty">Loading providers...</p>
+    </div>
+
+</main>
+
+<script>
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[character]));
+}
+
+function toggleTheme() {
+    const dark = !document.body.classList.contains('dark');
+    applyTheme(dark ? 'dark' : 'light');
+}
+
+function applyTheme(theme) {
+    document.body.classList.toggle('dark', theme === 'dark');
+
+    localStorage.setItem('benzi-theme', theme);
+
+    const toggle = document.getElementById('themeToggle');
+
+    if (toggle) {
+        toggle.textContent = theme === 'dark' ? '☀' : '☾';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const savedTheme = localStorage.getItem('benzi-theme') || 'light';
+    applyTheme(savedTheme);
+});
+
+
+
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
+
+const categoryNames = {
+    IT: "IT Support Providers",
+    NANNY: "Nanny & Childcare Providers",
+    CLEANING: "Cleaning Providers",
+    TUTORING: "Tutoring Providers"
+};
+
+document.getElementById("pageTitle").textContent =
+    categoryNames[category] || "Find your provider.";
+
+document.getElementById("pageIntro").textContent =
+    category
+    ? "Explore services and approved professionals in this category."
+    : "Discover approved professionals offering services through Benzi.";
+
+let allServices = [];
+
+async function loadProviders() {
+    const container = document.getElementById("providerResults");
+
+    try {
+        const response = await fetch("/api/services/");
+
+        if (!response.ok) {
+            throw new Error("Could not load providers.");
+        }
+
+        const result = await response.json();
+
+        allServices = Array.isArray(result)
+            ? result
+            : (result.results || []);
+
+        renderProviders();
+
+    } catch (error) {
+        container.innerHTML =
+            '<p class="empty">Unable to load providers. Please refresh.</p>';
+        console.error(error);
+    }
+}
+
+function renderProviders() {
+    const container = document.getElementById("providerResults");
+
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const suburb = document.getElementById("suburbInput").value.toLowerCase();
+
+    const filtered = allServices.filter(service => {
+        const categoryMatch = !category || service.category === category;
+
+        const searchMatch =
+            (service.title || "").toLowerCase().includes(search) ||
+            (service.provider_name || "").toLowerCase().includes(search) ||
+            (service.description || "").toLowerCase().includes(search);
+
+        const suburbMatch =
+            (service.suburb || "").toLowerCase().includes(suburb);
+
+        return categoryMatch && searchMatch && suburbMatch;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML =
+            '<p class="empty">No matching providers found. Try another search.</p>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(service => `
+        <article class="provider-card"
+    onclick="window.location.href='/profiles/?provider=${Number(service.provider)}'"
+    role="link"
+    tabindex="0"
+    style="cursor:pointer;">
+
+            <div class="provider-category">
+                ${escapeHTML(service.category)}
+            </div>
+
+            <h2>${escapeHTML(service.provider_name || "Benzi Provider")}</h2>
+
+            <p><strong>${escapeHTML(service.title)}</strong></p>
+
+            <p>${escapeHTML(service.description)}</p>
+
+            <div class="provider-details">
+                <span>${escapeHTML(service.suburb || "Location not specified")}</span>
+                <strong class="price">
+                    R${Number(service.price).toFixed(2)}
+                </strong>
+            </div>
+
+        </article>
+    `).join("");
+}
+
+document.getElementById("searchInput")
+    .addEventListener("input", renderProviders);
+
+document.getElementById("suburbInput")
+    .addEventListener("input", renderProviders);
+
+loadProviders();
+</script>
+
+</body>
+</html>

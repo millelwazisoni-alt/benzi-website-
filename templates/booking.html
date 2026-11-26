@@ -1,0 +1,236 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service | Benzi</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --harbor: #155E56;
+            --ember: #E25B3D;
+            --marigold: #D99A30;
+            --off: #F8F7F3;
+            --ink: #1B1F1E;
+            --muted: #68736F;
+            --line: #DCE2DD;
+            --white: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--off);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            padding: 22px 7%;
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            color: var(--harbor);
+            font-family: 'Fraunces', serif;
+            font-size: 30px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .booking-card {
+            background: var(--white);
+            padding: 38px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 36px;
+            margin-top: 0;
+        }
+
+        .intro {
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin: 20px 0 8px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            margin-top: 25px;
+            width: 100%;
+            padding: 15px;
+            background: var(--harbor);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #0D3E39;
+        }
+
+        .service-info {
+            padding: 18px;
+            background: var(--off);
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        #message {
+            margin-top: 18px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 600px) {
+            .booking-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/" class="logo">benzi.</a>
+</header>
+
+<main>
+    <div class="booking-card">
+        <h1>Book a service.</h1>
+
+        <p class="intro">
+            Tell us when and where you need the service.
+        </p>
+
+        <div class="service-info">
+            <strong>Selected service ID:</strong>
+            <span id="serviceId">Loading...</span>
+        </div>
+
+        <form id="bookingForm">
+            <label for="scheduledFor">Preferred date and time</label>
+            <input type="datetime-local" id="scheduledFor" required>
+
+            <label for="suburb">Suburb</label>
+            <input type="text" id="suburb" required>
+
+            <label for="address">Address details</label>
+            <textarea id="address" required></textarea>
+
+            <label for="notes">Additional instructions</label>
+            <textarea id="notes"></textarea>
+
+            <button type="submit" class="submit-btn">
+                Continue with booking
+            </button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+</main>
+
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const serviceId = params.get('service');
+
+document.getElementById('serviceId').textContent =
+    serviceId || 'No service selected';
+
+document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const message = document.getElementById('message');
+    const token = sessionStorage.getItem('benziToken');
+
+    if (!token) {
+        message.textContent = 'Please log in before booking a service.';
+        return;
+    }
+
+    if (!serviceId) {
+        message.textContent = 'No service has been selected.';
+        return;
+    }
+
+    const bookingData = {
+        service: Number(serviceId),
+        scheduled_for: document.getElementById('scheduledFor').value,
+        suburb: document.getElementById('suburb').value.trim(),
+        address_details: document.getElementById('address').value.trim(),
+        notes: document.getElementById('notes').value.trim()
+    };
+
+    message.textContent = 'Submitting your booking...';
+
+    try {
+        const response = await fetch('/api/bookings/my-bookings/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify(bookingData)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                Object.values(result).flat().join(' ') ||
+                'Booking could not be submitted.'
+            );
+        }
+
+        message.textContent =
+            `Booking #${result.id} submitted successfully!`;
+
+        document.getElementById('bookingForm').reset();
+
+    } catch (error) {
+        console.error('Booking error:', error);
+        message.textContent = error.message;
+    }
+});
+</script>
+
+
+</body>
+</html>
