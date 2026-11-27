@@ -61,14 +61,24 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://benzi.online",
+    "https://www.benzi.online",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://benzi.online",
+    "https://www.benzi.online",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -179,3 +189,13 @@ PAYMENT_WEBHOOK_SECRET = os.environ.get(
     "PAYMENT_WEBHOOK_SECRET",
     "development-only-webhook-secret"
 )
+
+CORS_ALLOWED_ORIGINS = [
+    "https://benzi.online",
+    "https://www.benzi.online",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://benzi.online",
+    "https://www.benzi.online",
+]
