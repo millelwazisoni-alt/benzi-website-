@@ -343,6 +343,21 @@ body.dark .providerProfile{background:rgba(19,35,31,.94);border-color:#314740}
 
 <script>
 
+
+const API_BASE_URL = "https://benzi-website-1.onrender.com";
+
+async function apiFetch(endpoint, options = {}) {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers: {
+            ...(options.headers || {})
+        }
+    });
+
+    return response;
+}
+
+
 const savedTheme=localStorage.getItem('benzi-theme');
 if(savedTheme==='dark'){document.body.classList.add('dark');document.getElementById('themeToggle').textContent='☀';}
 function toggleTheme() {
@@ -410,7 +425,7 @@ message.style.color = "var(--muted)";
 message.textContent = "Creating your account...";
 
 try {
-    const response = await fetch("/api/users/register/", {
+    const response = await apiFetch("/api/users/register/", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
@@ -474,7 +489,7 @@ message.style.color = "var(--muted)";
 message.textContent = "Logging in...";
 
 try {
-    const response = await fetch("/api/users/login/", {
+    const response = await apiFetch("/api/users/login/", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
@@ -532,6 +547,8 @@ if (pageParams.get('login') === 'true') {
         loginForm.prepend(message);
     }
 }
+
+
 
 </script>
 </body></html>
